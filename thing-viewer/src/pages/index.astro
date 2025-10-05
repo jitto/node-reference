@@ -1,0 +1,47 @@
+---
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://thing-api:3000';
+
+// Fetch things from API
+let things = [];
+let error = null;
+
+try {
+  const response = await fetch(`${API_URL}/things`);
+  if (response.ok) {
+    things = await response.json();
+  } else {
+    error = 'Failed to fetch things';
+  }
+} catch (e) {
+  error = 'Failed to fetch things';
+  console.error(e);
+}
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+    <h1>Things</h1>
+    
+    {error ? (
+      <div class="error">{error}</div>
+    ) : things.length === 0 ? (
+      <p>No things found.</p>
+    ) : (
+      <ul class="things-list">
+        {things.map(thing => (
+          <li class="thing-item">
+            <div class="thing-id">ID: {thing.id}</div>
+            <div class="thing-name">{thing.name}</div>
+          </li>
+        ))}
+      </ul>
+    )}
+	</body>
+</html>

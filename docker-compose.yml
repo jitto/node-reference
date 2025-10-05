@@ -1,0 +1,29 @@
+services:
+  thing-database:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: thing-database
+    ports:
+      - "5432:5432"
+    volumes:
+    - ./thing-database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  thing-api:
+    build: ./thing-api
+    environment:
+      DATABASE_URL: thing-database://user:password@thing-database:5432/thing-database
+    ports:
+      - "3000:3000"
+    depends_on:
+      - thing-database
+
+  thing-viewer:
+    build: ./thing-viewer
+    environment:
+      PUBLIC_API_URL: http://thing-api:3000
+    ports:
+      - "4321:4321"
+    depends_on:
+      - thing-api
