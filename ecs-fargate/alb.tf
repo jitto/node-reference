@@ -1,7 +1,7 @@
 resource "aws_alb" "alb" {
   name            = "demo-ALB"
   security_groups = [aws_security_group.allow_http.id]
-  subnets         = [aws_subnet.pub_subnet_1.id, aws_subnet.pub_subnet_2.id]
+  subnets         = [aws_subnet.priv_subnet_1.id, aws_subnet.priv_subnet_2.id, aws_subnet.priv_subnet_3.id]
 }
 
 resource "aws_alb_target_group" "alb-example" {
@@ -22,6 +22,6 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
-output "http_api_endpoint" {
+output "ALB_http_api_endpoint" {
   value = aws_alb.alb.dns_name
 }

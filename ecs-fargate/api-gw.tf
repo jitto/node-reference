@@ -33,3 +33,7 @@ resource "aws_apigatewayv2_stage" "default_stage" {
   name        = "$default"
   auto_deploy = true
 }
+
+output "API_GW_http_api_endpoint" {
+  value = aws_apigatewayv2_api.http_api.api_endpoint
+}
